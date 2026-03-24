@@ -1,14 +1,33 @@
 # ProxiFyre UI
 
-A modern desktop application for managing the [ProxiFyre](https://github.com/wiresock/proxifyre) SOCKS5 proxifier — configure proxy rules, manage application exclusions, and control the Windows service, all from a clean dark/light-themed GUI.
+A modern desktop application for managing the [ProxiFyre](https://github.com/wiresock/proxifyre) SOCKS5 proxifier —
+configure proxy rules, manage application exclusions, and control the Windows service, all from a clean
+dark/light-themed GUI.
 
 > **Windows only.** ProxiFyre itself is a Windows-native proxifier; this UI targets the same platform.
 
 ---
 
+## Screenshots
+
+Dashboard
+
+![Dashboard](doc/main-page.png)
+
+Add Proxy Rule Page
+
+![Proxy Rule](doc/add-proxy-page.png)
+
+Settings Page
+
+![Settings](doc/settings-page.png)
+
+---
+
 ## Features
 
-- **Proxy rules** — add, edit, and delete SOCKS5 proxy entries with named rules, per-app routing, TCP/UDP protocol selection, and optional authentication
+- **Proxy rules** — add, edit, and delete SOCKS5 proxy entries with named rules, per-app routing, TCP/UDP protocol
+  selection, and optional authentication
 - **Application picker** — select apps from running processes or browse for `.exe` files directly
 - **Exclusions** — maintain a bypass list so chosen apps skip all proxy rules
 - **Service management** — install, uninstall, start, stop, and restart the ProxiFyre Windows service
@@ -20,20 +39,51 @@ A modern desktop application for managing the [ProxiFyre](https://github.com/wir
 
 ---
 
-## Tech Stack
+## Installation
 
-| Layer | Technology |
-|---|---|
-| Desktop shell | [Tauri 2](https://tauri.app) |
-| Frontend | [SvelteKit 2](https://kit.svelte.dev) + [Svelte 5](https://svelte.dev) (Runes) |
-| Language | TypeScript + Rust |
-| Bundler | Vite |
-| Package manager | pnpm |
-| Installers | NSIS · MSI (Windows) |
+### Step 1 — Install system dependencies
+
+These components are required by ProxiFyre and must be installed before running the service.
+
+| # | Component                                                                                                            | Description                                         |
+|---|----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| 1 | [Windows Packet Filter (WinpkFilter)](https://github.com/wiresock/ndisapi/releases)                                  | Low-level packet filtering driver used by ProxiFyre |
+| 2 | [Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170) | Microsoft Visual Studio Runtime Libraries (x64)     |
+| 3 | [ProxiFyre](https://github.com/wiresock/proxifyre/releases)                                                          | The core SOCKS5 proxifier application               |
+
+### Step 2 — Install ProxiFyre UI
+
+Download the latest `.msi` or `.exe` installer from the [Releases](https://github.com/dmitry-osin/ProxiFyreUI/releases)
+page and run it.
+
+### Step 3 — Configure and start
+
+1. Launch **ProxiFyre UI** (run as Administrator for service management)
+2. Open **Settings** → **ProxiFyre Paths** and set:
+    - **ProxiFyre Executable** — path to `ProxiFyre.exe`
+    - **Configuration File** — path to `app-config.json` (use *Create Default Config* if the file doesn't exist yet)
+3. Open **Proxies** and add one or more SOCKS5 proxy rules, assigning target applications to each rule
+4. Open **Exclusions** and add any applications that should bypass all proxies
+5. Return to **Dashboard** → click **Install Service**, then **Start** to bring the ProxiFyre Windows service online
+
+> All UI settings are stored in `%APPDATA%\pro.osin.tools.proxifyre-ui\`.
 
 ---
 
-## Getting Started
+## Tech Stack
+
+| Layer           | Technology                                                                     |
+|-----------------|--------------------------------------------------------------------------------|
+| Desktop shell   | [Tauri 2](https://tauri.app)                                                   |
+| Frontend        | [SvelteKit 2](https://kit.svelte.dev) + [Svelte 5](https://svelte.dev) (Runes) |
+| Language        | TypeScript + Rust                                                              |
+| Bundler         | Vite                                                                           |
+| Package manager | pnpm                                                                           |
+| Installers      | NSIS · MSI (Windows)                                                           |
+
+---
+
+## Building from Source
 
 ### Prerequisites
 
@@ -64,17 +114,6 @@ If you replace `src-tauri/icons/icon.png` (minimum **1024 × 1024 px**), regener
 ```powershell
 pnpm tauri icon src-tauri/icons/icon.png
 ```
-
----
-
-## Configuration
-
-On first launch go to **Settings** and provide:
-
-1. **ProxiFyre Executable** — path to `ProxiFyre.exe`
-2. **Configuration File** — path to `app-config.json` (create a default one with the button if the file doesn't exist yet)
-
-All UI settings are stored in the Tauri app-config directory (`%APPDATA%\pro.osin.tools.proxifyre-ui\`).
 
 ---
 
