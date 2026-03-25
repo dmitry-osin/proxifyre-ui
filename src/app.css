@@ -590,6 +590,8 @@ html, body {
 /* ── Grid / flex utilities ───────────────────────────────────────────────── */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-2 > .card + .card,
+.grid-3 > .card + .card { margin-top: 0; }
 .flex   { display: flex; }
 .flex-col { flex-direction: column; }
 .items-center { align-items: center; }
